@@ -18,10 +18,10 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
-        <!-- nacos 服务发现 -->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <groupId>com.air.health</groupId>
+            <artifactId>health_common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,19 @@
+# 加载 bootstrap 需要配置 bootstrap 相关依赖
+server:
+  port: 12700
+spring:
+  application:
+    name: air-health-member
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: air-health
+        group: dev
+      config:
+        namespace: air-health
+        group: dev
+        # 配置文件后缀(默认: properties)
+        file-extension: yaml
+
+test: fnasjf

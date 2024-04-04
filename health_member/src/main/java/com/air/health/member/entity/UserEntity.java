@@ -1,12 +1,12 @@
 package com.air.health.member.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * @Title: user
@@ -19,58 +19,76 @@ import java.sql.Date;
 @Data
 @TableName("tb_user")
 public class UserEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * 用户id
      */
-    @TableId
-    private Long userId;
+    @TableId(value = "user_id")
+    private Long id;
     /**
-     * 用户昵称
+     * 用户名称
      */
-    private String userName;
+    @TableField("user_name")
+    private String name;
     /**
-     * 用户密码
+     * 密码
      */
+    @TableField("user_password")
     private String password;
     /**
-     * 用户全名
+     * 全名
      */
+    @TableField("user_fullName")
     private String fullName;
     /**
-     * 用户性别
+     * 性别
      */
-    private String gender;
+    @TableField("user_gender")
+    private Integer gender;
     /**
      * 出生日期
      */
-    private Date date;
+    @TableField("user_dateOfBirth")
+    private LocalDateTime dateofbirth;
     /**
-     * 用户年龄
+     * 年龄
      */
+    @TableField("user_age")
     private Integer age;
     /**
      * 身份证号
      */
-    private BigInteger identity;
+    @TableField("user_identity")
+    private String identity;
     /**
-     * 手机号码
+     * 电话号码
      */
-    private BigInteger phone;
+    @TableField("user_phoneNumber")
+    private Long phoneNumber;
     /**
      * 紧急联系方式
      */
-    private BigInteger eci;
+    @TableField("user_emergencyContact")
+    private Long emergencyContact;
     /**
-     * 家庭住址
+     * 地址
      */
+    @TableField("user_address")
     private String address;
     /**
-     * 病历id
+     * 注册时间
      */
-    private Integer mrId;
+    @TableField("user_registerTime")
+    private LocalDateTime registerTime;
     /**
-     * 账号状态
+     *
      */
-    private boolean isAlive;
+    @TableField("user_loginTime")
+    private LocalDateTime loginTime;
+    /**
+     *
+     */
+    @TableField("user_status")
+    private Integer status;
 }

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Title: InstructionEntity
  * @Author Aircreach
@@ -16,19 +18,25 @@ import lombok.Data;
  */
 @Data
 @TableName("tb_ins")
-public class InstructionEntity {
-    @TableId
-    private Integer insId;
+public class InstructionEntity implements Serializable {
+    @TableId(value = "ins_id")
+    private Integer id;
 
-    @TableField
-    private String insName;
+    @TableField("ins_name")
+    private String name;
 
-    @TableField
+    @TableField("ins_address")
     private String address;
 
-    @TableField
-    private String insDesc;
+    @TableField("ins_score")
+    private Integer score;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField("ins_evalNum")
+    private  Integer evalNum;
+
+    @TableField("ins_desc")
+    private String desc;
+
+    @TableField(value = "ins_status", fill = FieldFill.INSERT)
     private Boolean status;
 }

@@ -13,6 +13,7 @@
         <module>health_common</module>
         <module>health_member</module>
         <module>health_instruction</module>
+        <module>health_gateway</module>
     </modules>
 
     <properties>
@@ -53,6 +54,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- OpenFeign访问远程服务 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -63,6 +70,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- nacos 服务发现 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!-- nacos 配置中心 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!-- bootstrap -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
         <!-- mysql数据库驱动 -->
         <dependency>
             <groupId>mysql</groupId>
@@ -70,11 +96,11 @@
             <version>8.0.33</version>
         </dependency>
 
-        <!-- mybatis-plus 依赖 -->
+        <!-- mybatis-plus 依赖( springboot 3 ) -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.2</version>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.5</version>
         </dependency>
 
         <!-- lombok 依赖 -->
@@ -106,8 +132,6 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-
-
     </dependencyManagement>
 
 </project>

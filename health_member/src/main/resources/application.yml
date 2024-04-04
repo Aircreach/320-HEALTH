@@ -13,6 +13,13 @@ spring:
     username: root
     password: 617305.cOm
     url: jdbc:mysql://127.0.0.1:3600/airhealth?serverTimezone=UTC
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    # 关闭驼峰命名与下划线命名映射
+    map-underscore-to-camel-case: false
 
 
 
