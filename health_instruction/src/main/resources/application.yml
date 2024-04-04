@@ -1,0 +1,15 @@
+server:
+  port: 12800
+
+spring:
+  application:
+    name: air-health-instruction
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 617305.cOm
+    url: jdbc:mysql://127.0.0.1:3600/airhealth?serverTimezone=UTC
