@@ -31,7 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+<<<<<<< HEAD
 
 ### 自定义 ###
 **/mvnw
 **/mvnw.cmd
+=======
+>>>>>>> f1b90d10937a633ae585cdda3d69313c1678b3b4
