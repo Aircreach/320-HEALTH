@@ -1,7 +1,7 @@
 package com.air.health.instruction.service.impl;
 
-import com.air.health.common.util.PageUtils;
-import com.air.health.common.util.Query;
+import com.air.health.common.model.PageModel;
+import com.air.health.common.util.PageUtil;
 import com.air.health.instruction.dao.InstructionDao;
 import com.air.health.instruction.entity.InstructionEntity;
 import com.air.health.instruction.service.InstructionService;
@@ -24,11 +24,11 @@ import java.util.Map;
 public class InstructionServiceImpl extends ServiceImpl<InstructionDao, InstructionEntity> implements InstructionService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageModel queryPage(Map<String, Object> params) {
         IPage<InstructionEntity> page = this.page(
-                new Query<InstructionEntity>().getPage(params),
+                PageUtil.getPage(params),
                 new QueryWrapper<InstructionEntity>()
         );
-        return new PageUtils(page);
+        return new PageModel(page);
     }
 }

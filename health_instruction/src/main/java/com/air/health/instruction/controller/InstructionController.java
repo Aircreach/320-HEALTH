@@ -1,7 +1,7 @@
 package com.air.health.instruction.controller;
 
-import com.air.health.common.util.PageUtils;
-import com.air.health.common.util.Result;
+import com.air.health.common.model.PageModel;
+import com.air.health.common.model.Result;
 import com.air.health.instruction.entity.InstructionEntity;
 import com.air.health.instruction.service.InstructionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,18 @@ public class InstructionController {
     @Autowired
     private InstructionService instructionService;
 
+
+    /**
+     *
+     */
+
     /**
      * 列表
      */
     @RequestMapping("/list")
 //    @RequiresPermissions("generator:instruction:list")
     public Result list(@RequestParam Map<String, Object> params){
-        PageUtils page = instructionService.queryPage(params);
+        PageModel page = instructionService.queryPage(params);
 
         return Result.success().put("page", page);
     }

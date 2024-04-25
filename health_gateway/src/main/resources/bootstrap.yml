@@ -4,7 +4,16 @@ server:
 spring:
   application:
     name: air-health-gateway
+  main:
+    web-application-type: reactive
   cloud:
+#      routes:
+#        - id: route_user
+#          uri: lb://air-health-member
+#          predicates:
+#            - Path='/air/**'
+#          filters:
+#            - RewritePath=/air/(?<segment>.*), /$\{segment}
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
@@ -25,6 +34,10 @@ spring:
             group: dev
             refresh: true
           # 服务配置
-          - data-id: server.yaml
+          - data-id: gateway.yaml
+            group: dev
+            refresh: true
+          # 常规配置
+          - data-id: app.yaml
             group: dev
             refresh: true

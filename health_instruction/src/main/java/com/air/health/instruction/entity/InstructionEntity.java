@@ -20,7 +20,7 @@ import java.io.Serializable;
 @TableName("tb_ins")
 public class InstructionEntity implements Serializable {
     @TableId(value = "ins_id")
-    private Integer id;
+    private Long id;
 
     @TableField("ins_name")
     private String name;
@@ -35,7 +35,7 @@ public class InstructionEntity implements Serializable {
     private  Integer evalNum;
 
     @TableField("ins_desc")
-    private String desc;
+    private String description;
 
     @TableField(value = "ins_status", fill = FieldFill.INSERT)
     private Boolean status;

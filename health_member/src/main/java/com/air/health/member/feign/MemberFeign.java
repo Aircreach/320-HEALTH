@@ -12,4 +12,9 @@ import org.springframework.cloud.openfeign.FeignClient;
  */
 @FeignClient("health-member")
 public interface MemberFeign {
+//    @Autowired
+//    private RoleService remoteService;
+//
+//
+//    @PostMapping("/")
 }

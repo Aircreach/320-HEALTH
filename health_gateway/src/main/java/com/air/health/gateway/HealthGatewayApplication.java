@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
-//@EnableFeignClients(basePackages = "com.air.health.member.feign")
+@EnableFeignClients(basePackages = "com.air.health.gateway.feign")
 public class HealthGatewayApplication {
 
 	public static void main(String[] args) {

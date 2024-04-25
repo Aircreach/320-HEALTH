@@ -18,7 +18,16 @@
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
-
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+		<!-- Spring Cloud 2020版本以后，默认移除了对Netflix的依赖, 官方默认推荐使用Spring Cloud Loadbalancer => 针对 503 Service Unavailable -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-loadbalancer</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>

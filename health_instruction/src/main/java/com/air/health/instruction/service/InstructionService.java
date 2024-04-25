@@ -1,6 +1,6 @@
 package com.air.health.instruction.service;
 
-import com.air.health.common.util.PageUtils;
+import com.air.health.common.model.PageModel;
 import com.air.health.instruction.entity.InstructionEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,5 +16,5 @@ import java.util.Map;
  */
 public interface InstructionService extends IService<InstructionEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageModel queryPage(Map<String, Object> params);
 }

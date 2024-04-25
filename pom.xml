@@ -11,9 +11,10 @@
 
     <modules>
         <module>health_common</module>
-        <module>health_member</module>
-        <module>health_instruction</module>
         <module>health_gateway</module>
+        <module>health_admin</module>
+        <module>health_instruction</module>
+        <module>health_user</module>
     </modules>
 
     <properties>
@@ -96,6 +97,13 @@
             <version>8.0.33</version>
         </dependency>
 
+        <!-- druid 连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+
         <!-- mybatis-plus 依赖( springboot 3 ) -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -109,6 +117,21 @@
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
         </dependency>
+
+
+        <!-- Spring Data Redis redis配置 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- fastjson配置 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.9.graal</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
