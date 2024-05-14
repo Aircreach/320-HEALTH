@@ -1,6 +1,6 @@
 package com.air.health.common.filter;
 
-import com.air.health.common.exception.AirException;
+import com.air.health.common.model.AirException;
 import org.apache.commons.lang.StringUtils;
 
 /**

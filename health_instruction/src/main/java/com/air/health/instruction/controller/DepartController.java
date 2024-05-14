@@ -1,13 +1,19 @@
 package com.air.health.instruction.controller;
 
 import com.air.health.common.model.PageModel;
+import com.air.health.common.model.QueryModel;
 import com.air.health.common.model.Result;
+import com.air.health.common.util.Constants;
 import com.air.health.instruction.entity.DepartEntity;
+import com.air.health.instruction.entity.dto.DepartDto;
+import com.air.health.instruction.feign.MemberFeign;
 import com.air.health.instruction.service.DepartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,20 +28,24 @@ import java.util.Map;
 @RestController
 @RequestMapping("/depart")
 public class DepartController {
+
     @Autowired
     private DepartService departService;
 
+    @Autowired
+    private MemberFeign memberFeign;
+
     /**
      * 树状查询
-     * @param params
+     * @param
      * @return
      */
-    @GetMapping("/tree")
+    @GetMapping("/tree/{insId}")
 //    @RequiresPermissions("generator:depart:list")
-    public Result tree(@RequestBody Map<String, Object> params){
-        PageModel page = departService.queryPage(params);
+    public Result tree(@PathVariable("insId") Long insId){
+        ArrayList<DepartDto> tree = departService.queryTree(insId);
 
-        return Result.success().put("tree", page);
+        return Result.success().put("tree", tree);
     }
 
 
@@ -48,6 +58,21 @@ public class DepartController {
         PageModel page = departService.queryPage(params);
 
         return Result.success().put("page", page);
+    }
+
+
+    @PostMapping("/listMember")
+    public Result listMember(@RequestParam("insId") Long insId, @RequestParam("departId") Long departId, @RequestBody Map<String, Object> params) {
+        ArrayList temp = new ArrayList();
+        if (params.get("extra") != null) {
+            temp = (ArrayList) params.get("extra");
+        }
+        QueryModel query_ins = new QueryModel(Constants.EQUAL, "insId", insId);
+        QueryModel query_depart = new QueryModel(Constants.EQUAL, "departId", departId);
+        temp.add(query_ins);
+        temp.add(query_depart);
+        params.put("extra", temp);
+        return memberFeign.list(params);
     }
 
 

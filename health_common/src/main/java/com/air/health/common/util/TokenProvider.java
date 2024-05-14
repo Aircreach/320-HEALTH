@@ -1,7 +1,6 @@
 package com.air.health.common.util;
 
 import io.jsonwebtoken.*;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,8 +11,20 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-    @Value("${app.jwt.secret}")
-    private String JWTSecret;
+    @Value("${app.jwt.secret.user}")
+    private String JWTSecret_User;
+
+    @Value("${app.jwt.secret.member}")
+    private String JWTSecret_Member;
+
+    @Value("${app.jwt.secret.instruction}")
+    private String JWTSecret_Ins;
+
+    @Value("${app.jwt.secret.admin}")
+    private String JWTSecret_Admin;
+
+    @Value("${app.jwt.secret.feign}")
+    private String JWTSecret_Feign;
 
     @Value("${app.jwt.expiration-in-ms}")
     private Long JWTExpirationInMs;
@@ -23,47 +34,68 @@ public class TokenProvider {
 
     /**
      * generate token
+     *
      * @param subject
      * @return
      */
-    public String generate(String subject) {
+    public String generate(int type, String subject) {
+        return generate(type, subject, JWTExpirationInMs);
+    }
 
+    public String generate(int type, String subject, Long expiryTime) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + JWTExpirationInMs);
-
+        Date expiryDate = new Date(now.getTime() + expiryTime);
+        String secret = "";
+        switch (type) {
+            case Constants.TOKEN_USER -> secret = JWTSecret_User;
+            case Constants.TOKEN_MEMBER -> secret = JWTSecret_Member;
+            case Constants.TOKEN_INS -> secret = JWTSecret_Ins;
+            case Constants.TOKEN_ADMIN -> secret = JWTSecret_Admin;
+            case Constants.TOKEN_FEIGN -> secret = JWTSecret_Feign;
+        }
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, JWTSecret)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
-    public String parseToken(String token) throws IllegalArgumentException, ExpiredJwtException {
+    public Claims parseToken(int type, String token) throws JwtException {
+        String secret = "";
+        switch (type) {
+            case Constants.TOKEN_USER -> secret = JWTSecret_User;
+            case Constants.TOKEN_MEMBER -> secret = JWTSecret_Member;
+            case Constants.TOKEN_INS -> secret = JWTSecret_Ins;
+            case Constants.TOKEN_ADMIN -> secret = JWTSecret_Admin;
+            case Constants.TOKEN_FEIGN -> secret = JWTSecret_Feign;
+        }
+
         Claims claims = Jwts.parser()
-                .setSigningKey(JWTSecret)
+                .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        // 判断jwt是否存在
-        if (claims == null){
-            throw new JwtException("token 异常");
-        }
-        // 判断jwt是否过期
-        if (claims.getExpiration().before(new Date())){
-            throw new JwtException("token 过期");
-        }
-        return claims.getSubject();
+        return claims;
     }
 
     /**
      * validate token
+     *
      * @param authToken
      * @return
      */
-    public boolean validate(String authToken) {
+    public boolean validate(int type, String authToken) {
+        String secret = "";
+        switch (type) {
+            case Constants.TOKEN_USER -> secret = JWTSecret_User;
+            case Constants.TOKEN_MEMBER -> secret = JWTSecret_Member;
+            case Constants.TOKEN_INS -> secret = JWTSecret_Ins;
+            case Constants.TOKEN_ADMIN -> secret = JWTSecret_Admin;
+            case Constants.TOKEN_FEIGN -> secret = JWTSecret_Feign;
+        }
         try {
-            Jwts.parser().setSigningKey(JWTSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
             // log.error("Invalid JWT signature");
@@ -79,18 +111,24 @@ public class TokenProvider {
         return false;
     }
 
+    public boolean isExpired(Claims claims) {
+        // 判断jwt是否过期
+        return claims.getExpiration().before(new Date());
+    }
+
     /**
      * 获取过期时间
      */
-    public Long getExpirationInMs() {
-        return  this.JWTExpirationInMs;
+    public Long getDefaultExpirationInMs() {
+        return this.JWTExpirationInMs;
     }
 
     /**
      * 获取请求头 key
+     *
      * @return
      */
-    public String getHeader() {
+    public String getDefaultHeader() {
         return this.TOKEN_HEADER;
     }
 

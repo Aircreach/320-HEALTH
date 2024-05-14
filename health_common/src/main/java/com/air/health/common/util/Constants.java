@@ -1,5 +1,7 @@
 package com.air.health.common.util;
 
+import lombok.AllArgsConstructor;
+
 /**
  * @Title: Constabts
  * @Author Aircreach
@@ -9,6 +11,19 @@ package com.air.health.common.util;
  * @description:
  */
 public class Constants {
+
+    /** COMMON **/
+    // feign token type
+
+    public static final int TOKEN_FEIGN = 0;
+    // user token type
+    public static final int TOKEN_USER = 1;
+    // member token type
+    public static final int TOKEN_MEMBER = 2;
+    // instruction token type
+    public static final int TOKEN_INS = 3;
+    // admin token type
+    public static final int TOKEN_ADMIN = 4;
 
     /** DATABASE **/
     // 超级管理员ID
@@ -21,18 +36,22 @@ public class Constants {
     public static final String METHOD = "type";
     // 字段
     public static final String FIELD = "field";
+    // value
+    public static final String VALUE = "value";
+    public static final String VALUE1 = "value1";
+    public static final String VALUE2 = "value2";
     // eq
     public static final String EQUAL = "equal";
     // like
     public static final String LIKE = "like";
+    // between
+    public static final String BETWEEN = "between";
     // order
     public static final String ORDER = "order";
     // 升序
     public static final String ASC = "asc";
     // 降序
     public static final String DESC = "desc";
-    // 额外数据
-    public static final String EXTRA = "extra";
 
     // 菜单类型
     public enum MenuType {
@@ -55,7 +74,11 @@ public class Constants {
     }
 
     /** redis 常量 **/
-    public static final String REDIS_KEY_PREFIX_TOKEN = "TOKEN-%s";
+    public static final String REDIS_KEY_PREFIX_TOKEN_USER = "TOKEN-USER-%s";
+    public static final String REDIS_KEY_PREFIX_TOKEN_MEMBER = "TOKEN-MEMBER-%s";
+    public static final String REDIS_KEY_PREFIX_TOKEN_INS = "TOKEN-INS-%s";
+    public static final String REDIS_KEY_PREFIX_TOKEN_ADMIN = "TOKEN-ADMIN-%s";
+    public static final String REDIS_KEY_PREFIX_TOKEN_FEIGN = "TOKEN-FEIGN-%s";
 
     /** 定时任务 **/
     // 定时任务状态
@@ -74,6 +97,25 @@ public class Constants {
         public int getValue() {
             return value;
         }
+    }
+
+    /** 文件分类 **/
+    @AllArgsConstructor
+    public enum FilePath {
+        AVATAR("/avatar"),
+        COMMON("/common");
+
+        String path;
+    }
+
+    /** 账号状态 **/
+    public enum AccountStatus {
+        // 正常
+        NORMAL,
+        // 停用
+        DISABLED,
+        // 废弃
+        ABANDON;
     }
 }
 

@@ -2,6 +2,7 @@ package com.air.health.common.model;
 
 import org.apache.http.HttpStatus;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,13 +14,13 @@ import java.util.Map;
  * @Date 2024/1/22 13:12
  * @description:
  */
-public class Result extends HashMap<String, Object> {
+public class Result extends HashMap<String, Object> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     // 构造函数
     public Result() {
-        put("code", 200);
+        put("code", HttpStatus.SC_OK);
         put("msg", "success");
     }
 

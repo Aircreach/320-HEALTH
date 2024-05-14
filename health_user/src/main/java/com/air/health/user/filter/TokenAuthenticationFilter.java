@@ -1,28 +1,28 @@
 package com.air.health.user.filter;
 
-import com.air.health.common.model.TokenModel;
+import com.air.health.common.model.AirException;
 import com.air.health.common.util.Constants;
 import com.air.health.common.util.TokenProvider;
 import com.air.health.user.entity.UserEntity;
+import com.alibaba.fastjson.JSON;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-import org.apache.el.parser.Token;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
+@Slf4j
 @Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
@@ -30,16 +30,60 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private RedisTemplate redisTemplate;
 
     @Autowired
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
+
+    @Value("${app.jwt.feign-header}")
+    private String header;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader(tokenProvider.getHeader());
-        if (token == null || StringUtils.isBlank(token)) {
+        if ("/user/login".equals(request.getRequestURI())) {
+            filterChain.doFilter(request, response); // 放行登录接口
+            return;
+        }
+
+        // 跨域请求认证
+        if (request.getHeader(header) != null) {
+            String feign_token = request.getHeader(header);
+            Claims feign_claims = tokenProvider.parseToken(Constants.TOKEN_FEIGN, feign_token);
+            if (feign_claims == null){
+                throw new JwtException("token 异常");
+            }
+            //判断jwt是否过期
+            if (tokenProvider.isExpired(feign_claims)){
+                throw new JwtException("token 过期");
+            }
+            String key = feign_claims.getSubject();
+            String feign_data = (String) redisTemplate.opsForValue().get(String.format(Constants.REDIS_KEY_PREFIX_TOKEN_FEIGN, key));
+            if (feign_data == null) {
+                throw new AirException("请求认证异常, 未知原因");
+            }
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(key, null, null);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             filterChain.doFilter(request, response);
             return;
         }
-        String username = tokenProvider.parseToken(token);
-        filterChain.doFilter(request,response);
+        if (request.getHeader(tokenProvider.getDefaultHeader()) != null) {
+            String token = request.getHeader(tokenProvider.getDefaultHeader());
+            Claims claims = tokenProvider.parseToken(Constants.TOKEN_USER, token);
+            if (claims == null){
+                throw new JwtException("token 异常");
+            }
+            //判断jwt是否过期
+            if (tokenProvider.isExpired(claims)){
+                throw new JwtException("token 过期");
+            }
+            String data = (String) redisTemplate.opsForValue().get(String.format(Constants.REDIS_KEY_PREFIX_TOKEN_USER, claims.getSubject()));
+            if (data == null) {
+                throw new AirException("登陆异常, 请重新登录");
+            } else {
+                UserEntity user = JSON.parseObject(data, UserEntity.class);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
+            }
+        } else {
+            throw new JwtException("token 异常");
+        }
     }
 }

@@ -1,6 +1,9 @@
 package com.air.health.user.entity;
 
+import com.air.health.common.handler.EncodeTypeHandler;
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +29,7 @@ public class UserEntity implements Serializable, UserDetails {
      * 用户id
      */
     @TableId(value = "user_id", type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long userId;
     /**
      * 用户名称
@@ -35,7 +39,8 @@ public class UserEntity implements Serializable, UserDetails {
     /**
      * 密码
      */
-    @TableField("user_password")
+    @TableField(value = "user_password", typeHandler = EncodeTypeHandler.class)
+    @JsonIgnore()
     private String password;
     /**
      * 全名
@@ -88,10 +93,16 @@ public class UserEntity implements Serializable, UserDetails {
     @TableField(value = "user_loginTime", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime loginTime;
     /**
-     *
+     * 状态
      */
     @TableField("user_status")
     private Integer status;
+    /**
+     * 所属机构
+     */
+    @TableField("ins_id")
+    @JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+    private Long insId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

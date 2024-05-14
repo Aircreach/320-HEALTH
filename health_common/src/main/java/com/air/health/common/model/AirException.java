@@ -1,4 +1,4 @@
-package com.air.health.common.exception;
+package com.air.health.common.model;
 
 /**
  * @Title: AirException

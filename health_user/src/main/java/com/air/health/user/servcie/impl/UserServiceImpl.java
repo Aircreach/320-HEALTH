@@ -1,10 +1,12 @@
 package com.air.health.user.servcie.impl;
 
 import com.air.health.common.model.PageModel;
+import com.air.health.common.model.QueryModel;
 import com.air.health.common.util.PageUtil;
 import com.air.health.user.entity.UserEntity;
 import com.air.health.user.dao.UserDao;
 import com.air.health.user.servcie.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -32,9 +35,15 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     @Override
     public PageModel queryPage(Map<String, Object> params) {
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<UserEntity>();
+        if (params.get("extra") != null) {
+            ArrayList<Map> temp = (ArrayList<Map>) params.get("extra");
+            Class<UserEntity> entityClass = UserEntity.class;
+            queryWrapper = PageUtil.getQueryWrapper(temp, entityClass);
+        }
         IPage<UserEntity> page = this.page(
                 PageUtil.getPage(params),
-                new QueryWrapper<UserEntity>()
+                queryWrapper
         );
 
         return new PageModel(page);
@@ -42,9 +51,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     @Override
     public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
-        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", username);
+        LambdaQueryWrapper<UserEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserEntity::getUsername, username);
         UserEntity user = userDao.selectOne(queryWrapper);
+        log.info("=========================={}", user.toString());
         //查询不到该用户信息抛异常
         if(user == null){
             throw new UsernameNotFoundException("User not found with username: " + username);

@@ -5,9 +5,13 @@ import com.air.health.common.util.PageUtil;
 import com.air.health.instruction.dao.InstructionDao;
 import com.air.health.instruction.entity.InstructionEntity;
 import com.air.health.instruction.service.InstructionService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -23,6 +27,9 @@ import java.util.Map;
 @Service("instructionService")
 public class InstructionServiceImpl extends ServiceImpl<InstructionDao, InstructionEntity> implements InstructionService {
 
+    @Autowired
+    InstructionDao instructionDao;
+
     @Override
     public PageModel queryPage(Map<String, Object> params) {
         IPage<InstructionEntity> page = this.page(
@@ -30,5 +37,18 @@ public class InstructionServiceImpl extends ServiceImpl<InstructionDao, Instruct
                 new QueryWrapper<InstructionEntity>()
         );
         return new PageModel(page);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        LambdaQueryWrapper<InstructionEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(InstructionEntity::getInstructionName, username);
+        InstructionEntity member = instructionDao.selectOne(queryWrapper);
+        //查询不到该用户信息抛异常
+        if(member == null){
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        //封装成userEntity返回
+        return member;
     }
 }

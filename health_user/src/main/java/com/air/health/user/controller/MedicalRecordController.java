@@ -4,6 +4,7 @@ import com.air.health.common.model.PageModel;
 import com.air.health.common.model.Result;
 import com.air.health.user.entity.MedicalRecordEntity;
 import com.air.health.user.servcie.MedialRecordService;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;

@@ -1,19 +1,19 @@
 package com.air.health.user.controller;
 
-import com.air.health.common.exception.AirException;
-import com.air.health.common.model.TokenModel;
-import com.air.health.common.util.Constants;
 import com.air.health.common.model.PageModel;
 import com.air.health.common.model.Result;
+import com.air.health.common.model.TokenModel;
+import com.air.health.common.util.Constants;
 import com.air.health.common.util.TokenProvider;
 import com.air.health.user.entity.UserEntity;
+import com.air.health.user.feign.InsFeign;
 import com.air.health.user.servcie.UserService;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,47 +48,48 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    /**
-     * session-key-验证码存储
-     */
-    @Value("${app.common.validate}")
-    private String VALIDATE = "validate";
+    @Autowired
+    private InsFeign insFeign;
+
 
     @PostMapping("/login")
     public Result login(@RequestBody JSONObject param) {
-        log.info("触发登录=========={}, {}", param.toString());
-        String validate = (String) redisTemplate.opsForValue().get(String.format(VALIDATE + "%s", param.get("uuid")));
-        if (validate == null || !validate.equals(param.get("kaptcha").toString())) {
-            throw new AirException("ERROR => 验证码错误");
-        }
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(param.get("username"),
                         param.get("password")
                 )
         );
-        UserEntity user = (UserEntity)authentication.getPrincipal();
-        // 设置安全上下文
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserEntity user = (UserEntity) authentication.getPrincipal();
         // 生成JWT令牌
-        String token = tokenProvider.generate(user.getUsername());
+        String token = tokenProvider.generate(Constants.TOKEN_USER, user.getUsername());
         redisTemplate.opsForValue().set(
-                String.format(Constants.REDIS_KEY_PREFIX_TOKEN, user.getUserId()),
+                String.format(Constants.REDIS_KEY_PREFIX_TOKEN_USER, user.getUsername()),
                 JSON.toJSONString(user),
-                tokenProvider.getExpirationInMs(),
+                tokenProvider.getDefaultExpirationInMs(),
                 TimeUnit.MILLISECONDS
         );
-        return Result.success().put("token", new TokenModel(token));
+        return Result.success().put("token", new TokenModel(token)).put("user", user);
     }
 
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @PostMapping("/list")
 //    @RequiresPermissions("generator:user:list")
-    public Result list(@RequestParam Map<String, Object> params){
+    public Result list(@RequestBody Map<String, Object> params){
         PageModel page = userService.queryPage(params);
 
         return Result.success().put("page", page);
+    }
+
+    /**
+     * 查询机构
+     */
+    @PostMapping("/listIns")
+    public Result listIns(@RequestBody Map<String, Object> params){
+
+        return insFeign.list(params);
     }
 
 

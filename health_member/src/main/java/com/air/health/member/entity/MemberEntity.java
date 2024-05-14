@@ -1,13 +1,18 @@
 package com.air.health.member.entity;
 
+import com.air.health.common.handler.EncodeTypeHandler;
+import com.air.health.common.util.Constants;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -18,29 +23,32 @@ import lombok.Data;
  */
 @Data
 @TableName("tb_member")
-public class MemberEntity implements Serializable {
+public class MemberEntity implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 *
 	 */
-	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	@TableId(value = "member_id", type = IdType.ASSIGN_ID)
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Long memberId;
 	/**
 	 *
 	 */
 	@TableField("ins_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Long insId;
 	/**
 	 *
 	 */
 	@TableField("depart_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Long departId;
 	/**
 	 *
 	 */
 	@TableField("office_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Integer officeId;
 	/**
 	 *
@@ -50,7 +58,8 @@ public class MemberEntity implements Serializable {
 	/**
 	 *
 	 */
-	@TableField("member_password")
+	@TableField(value = "member_password", typeHandler = EncodeTypeHandler.class)
+	@JsonIgnore()
 	private String password;
 	/**
 	 *
@@ -76,10 +85,40 @@ public class MemberEntity implements Serializable {
 	 *
 	 */
 	@TableField("member_status")
-	private Integer memberStatus;
+	private Constants.AccountStatus memberStatus;
 	/**
 	 *
 	 */
 	@TableField(value = "member_joinDate", fill = FieldFill.INSERT)
 	private LocalDateTime memberJoinDate;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return memberName;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }

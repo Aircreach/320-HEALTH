@@ -5,6 +5,7 @@ import com.air.health.common.util.PageUtil;
 import com.air.health.user.dao.MedicalRecordDao;
 import com.air.health.user.entity.MedicalRecordEntity;
 import com.air.health.user.servcie.MedialRecordService;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

@@ -25,6 +25,10 @@ spring:
           - data-id: mybatis.yaml
             group: dev
             refresh: true
+          # redis 配置
+          - data-id: redis.yaml
+            group: dev
+            refresh: true
           # 常规配置
           - data-id: app.yaml
             group: dev

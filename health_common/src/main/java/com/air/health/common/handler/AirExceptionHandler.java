@@ -1,10 +1,16 @@
-package com.air.health.common.exception;
+package com.air.health.common.handler;
 
+import com.air.health.common.model.AirException;
 import com.air.health.common.model.Result;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +29,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * @description:
  */
 @Slf4j
-@RestControllerAdvice(annotations = {RestController.class , Controller.class})
+@RestControllerAdvice(annotations = {RestController.class, Controller.class})
 public class AirExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
@@ -70,11 +76,32 @@ public class AirExceptionHandler {
         return Result.error("数据库中已存在该记录");
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public Result handleBadCredentialsException(BadCredentialsException err){
+        log.error (err.getMessage(), err);
+        return Result.error(HttpStatus.SC_INTERNAL_SERVER_ERROR, "username / password 错误, 请重新登录");
+    }
+
+
+    @ExceptionHandler(JwtException.class)
+    public Result handleJwtException(JwtException err){
+        log.error (err.getMessage(), err);
+        return Result.error(HttpStatus.SC_UNAUTHORIZED, "登录认证失败, 请重新登录");
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     public Result handleAuthorizationException(AuthenticationException err){
         log.error (err.getMessage(), err);
-        return Result.error("权限不足，请联系管理员授权");
+        return Result.error(HttpStatus.SC_FORBIDDEN, "权限不足，请联系管理员授权");
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result handleAccessDeniedException(AccessDeniedException err){
+        log.error (err.getMessage(), err);
+        return Result.error(HttpStatus.SC_FORBIDDEN, "权限不足，请联系管理员授权");
+    }
+
+
 
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception err){
