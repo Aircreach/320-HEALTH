@@ -71,12 +71,16 @@ public class TokenProvider {
             case Constants.TOKEN_FEIGN -> secret = JWTSecret_Feign;
         }
 
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims;
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims;
+        } catch (Exception e) {
+            // 捕获异常并重新抛出
+            throw e;
+        }
     }
 
     /**

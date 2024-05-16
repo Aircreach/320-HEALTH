@@ -3,8 +3,7 @@ package com.air.health.user.feign;
 import com.air.health.common.model.Result;
 import com.air.health.user.interceptor.FeignClientInterceptor;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -20,4 +19,8 @@ import java.util.Map;
 public interface InsFeign {
     @PostMapping("/instruction/list")
     Result list(@RequestBody Map<String, Object> params);
+
+    @GetMapping("/instruction/info/{instructionId}")
+//    @RequiresPermissions("generator:instruction:info")
+    Result info(@PathVariable("instructionId") String insId);
 }

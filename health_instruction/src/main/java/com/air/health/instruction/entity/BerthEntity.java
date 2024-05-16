@@ -59,7 +59,7 @@ public class BerthEntity implements Serializable {
 	/**
 	 * 
 	 */
-	@TableField(value = "berth_status", typeHandler = EnumTypeHandler.class)
+	@TableField(value = "berth_status")
 	private BerthStatus berthStatus;
 
 }

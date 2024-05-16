@@ -86,7 +86,7 @@ public class InstructionController {
      */
     @RequestMapping("/list")
 //    @RequiresPermissions("generator:instruction:list")
-    public Result list(@RequestParam Map<String, Object> params){
+    public Result list(@RequestBody Map<String, Object> params){
         PageModel page = instructionService.queryPage(params);
 
         return Result.success().put("page", page);
@@ -154,7 +154,7 @@ public class InstructionController {
      */
     @RequestMapping("/info/{instructionId}")
 //    @RequiresPermissions("generator:instruction:info")
-    public Result info(@PathVariable("instructionId") Integer insId){
+    public Result info(@PathVariable("instructionId") String insId){
         InstructionEntity instruction = instructionService.getById(insId);
         return Result.success().put("instruction", instruction);
     }

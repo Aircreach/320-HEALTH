@@ -1,5 +1,6 @@
 package com.air.health.user.config;
 
+import com.air.health.common.util.AirPasswordEncoder;
 import com.air.health.user.filter.TokenAuthenticationFilter;
 import com.air.health.user.security.UserAuthenticationEntryPoint;
 import com.air.health.user.servcie.UserService;
@@ -58,7 +59,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user/login", "/user/save").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasicConfigurer -> {
@@ -80,7 +81,6 @@ public class SpringSecurityConfig {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance();
+        return new AirPasswordEncoder();
     }
 }

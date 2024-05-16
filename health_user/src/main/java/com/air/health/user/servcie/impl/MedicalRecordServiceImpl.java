@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -25,9 +26,15 @@ import java.util.Map;
 public class MedicalRecordServiceImpl extends ServiceImpl<MedicalRecordDao, MedicalRecordEntity> implements MedialRecordService {
     @Override
     public PageModel queryPage(Map<String, Object> params) {
+        QueryWrapper<MedicalRecordEntity> queryWrapper = new QueryWrapper<MedicalRecordEntity>();
+        if (params.get("extra") != null) {
+            ArrayList<Map> temp = (ArrayList<Map>) params.get("extra");
+            Class<MedicalRecordEntity> entityClass = MedicalRecordEntity.class;
+            queryWrapper = PageUtil.getQueryWrapper(temp, entityClass);
+        }
         IPage<MedicalRecordEntity> page = this.page(
                 PageUtil.getPage(params),
-                new QueryWrapper<MedicalRecordEntity>()
+                queryWrapper
         );
 
         return new PageModel(page);

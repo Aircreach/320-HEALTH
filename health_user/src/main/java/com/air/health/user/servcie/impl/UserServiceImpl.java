@@ -54,7 +54,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         LambdaQueryWrapper<UserEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserEntity::getUsername, username);
         UserEntity user = userDao.selectOne(queryWrapper);
-        log.info("=========================={}", user.toString());
         //查询不到该用户信息抛异常
         if(user == null){
             throw new UsernameNotFoundException("User not found with username: " + username);

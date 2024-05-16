@@ -3,6 +3,7 @@ package com.air.health.instruction.service.impl;
 import com.air.health.common.model.PageModel;
 import com.air.health.common.util.PageUtil;
 import com.air.health.instruction.dao.InstructionDao;
+import com.air.health.instruction.entity.DepartEntity;
 import com.air.health.instruction.entity.InstructionEntity;
 import com.air.health.instruction.service.InstructionService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -32,9 +34,15 @@ public class InstructionServiceImpl extends ServiceImpl<InstructionDao, Instruct
 
     @Override
     public PageModel queryPage(Map<String, Object> params) {
+        QueryWrapper<InstructionEntity> queryWrapper = new QueryWrapper<InstructionEntity>();
+        if (params.get("extra") != null) {
+            ArrayList temp = (ArrayList) params.get("extra");
+            Class<InstructionEntity> entityClass = InstructionEntity.class;
+            queryWrapper = PageUtil.getQueryWrapper(temp, entityClass);
+        }
         IPage<InstructionEntity> page = this.page(
                 PageUtil.getPage(params),
-                new QueryWrapper<InstructionEntity>()
+                queryWrapper
         );
         return new PageModel(page);
     }

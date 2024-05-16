@@ -46,6 +46,10 @@ public class Constants {
     public static final String LIKE = "like";
     // between
     public static final String BETWEEN = "between";
+    // ge
+    public static final String GE = "ge";
+    // le
+    public static final String LE = "le";
     // order
     public static final String ORDER = "order";
     // 升序

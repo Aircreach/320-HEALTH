@@ -1,6 +1,7 @@
 package com.air.health.instruction.model;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
@@ -32,5 +33,15 @@ public enum InsQuality {
 
     public String getContent() {
         return content;
+    }
+
+    @JsonCreator
+    public static InsQuality fromContent(String content) {
+        for (InsQuality insQuality : InsQuality.values()) {
+            if (insQuality.getContent().equals(content)) {
+                return insQuality;
+            }
+        }
+        throw new IllegalArgumentException("Unknown content: " + content);
     }
 }

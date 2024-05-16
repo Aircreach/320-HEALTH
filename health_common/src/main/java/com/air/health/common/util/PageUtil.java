@@ -109,6 +109,14 @@ public class PageUtil<T> {
                             // 获取属性的值
                             queryWrapper.between(columnName, item.get(Constants.VALUE1), item.get(Constants.VALUE2));
                             break;
+                        case Constants.GE:
+                            // 获取属性的值
+                            queryWrapper.ge(columnName, item.get(Constants.VALUE));
+                            break;
+                        case Constants.LE:
+                            // 获取属性的值
+                            queryWrapper.le(columnName, item.get(Constants.VALUE));
+                            break;
                         case Constants.ORDER:
                             String value = SQLFilter.sqlInject((String) item.get(Constants.VALUE));
                             if (value.equals(Constants.ASC)) {

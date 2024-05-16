@@ -1,9 +1,12 @@
 package com.air.health.instruction.entity;
 
+import com.air.health.common.handler.EncodeTypeHandler;
+import com.air.health.common.util.AirPasswordEncoder;
 import com.air.health.common.util.Constants;
 import com.air.health.instruction.handler.JSONListTypeHandler;
 import com.air.health.instruction.model.InsOperated;
 import com.air.health.instruction.model.InsQuality;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -29,7 +32,7 @@ import java.util.List;
 @Data
 @TableName("tb_ins")
 public class InstructionEntity implements Serializable, UserDetails {
-    @TableId(value = "ins_id")
+    @TableId(value = "ins_id", type = IdType.ASSIGN_ID)
     @JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
     private Long id;
 
@@ -39,8 +42,7 @@ public class InstructionEntity implements Serializable, UserDetails {
     @TableField("ins_name")
     private String instructionName;
 
-    @TableField("ins_pwd")
-    @JsonIgnore()
+    @TableField(value = "ins_pwd", typeHandler = EncodeTypeHandler.class)
     private String password;
 
     @TableField("ins_address")
@@ -55,10 +57,10 @@ public class InstructionEntity implements Serializable, UserDetails {
     @TableField("ins_desc")
     private String description;
 
-    @TableField(value = "ins_quality", typeHandler = EnumTypeHandler.class)
+    @TableField(value = "ins_quality")
     private InsQuality quality;
 
-    @TableField(value = "ins_operated", typeHandler = EnumTypeHandler.class)
+    @TableField(value = "ins_operated")
     private InsOperated operated;
 
     @TableField(value = "ins_status")
@@ -66,6 +68,9 @@ public class InstructionEntity implements Serializable, UserDetails {
 
     @TableField(value = "ins_label", typeHandler = JSONListTypeHandler.class)
     private List<String> label;
+
+    @TableField(value = "ins_price")
+    private Integer price;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

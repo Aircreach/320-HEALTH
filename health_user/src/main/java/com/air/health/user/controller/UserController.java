@@ -4,11 +4,13 @@ import com.air.health.common.model.PageModel;
 import com.air.health.common.model.Result;
 import com.air.health.common.model.TokenModel;
 import com.air.health.common.util.Constants;
+import com.air.health.common.util.IPUtil;
 import com.air.health.common.util.TokenProvider;
 import com.air.health.user.entity.UserEntity;
 import com.air.health.user.feign.InsFeign;
 import com.air.health.user.servcie.UserService;
 import com.alibaba.fastjson.JSON;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSONObject;
@@ -53,7 +55,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public Result login(@RequestBody JSONObject param) {
+    public Result login(HttpServletRequest request, @RequestBody JSONObject param) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(param.get("username"),
                         param.get("password")
@@ -61,6 +63,12 @@ public class UserController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserEntity user = (UserEntity) authentication.getPrincipal();
+        String region = IPUtil.getIPRegion(request);
+        if (region != null) {
+            user.setAddress(region);
+            log.info("=============={}", region);
+            userService.updateById(user);
+        }
         // 生成JWT令牌
         String token = tokenProvider.generate(Constants.TOKEN_USER, user.getUsername());
         redisTemplate.opsForValue().set(
@@ -90,6 +98,11 @@ public class UserController {
     public Result listIns(@RequestBody Map<String, Object> params){
 
         return insFeign.list(params);
+    }
+
+    @GetMapping("/infoIns/{instructionId}")
+    public Result infoIns(@PathVariable("instructionId") String insId){
+        return insFeign.info(insId);
     }
 
 

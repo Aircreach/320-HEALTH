@@ -1,5 +1,6 @@
 package com.air.health.instruction.config;
 
+import com.air.health.common.util.AirPasswordEncoder;
 import com.air.health.instruction.filter.TokenAuthenticationFilter;
 import com.air.health.instruction.security.InstructionAuthenticationEntryPoint;
 import com.air.health.instruction.service.InstructionService;
@@ -56,7 +57,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/instruction/login").permitAll()
+                        .requestMatchers("/instruction/login", "/instruction/save").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasicConfigurer -> {
@@ -79,6 +80,6 @@ public class SpringSecurityConfig {
     @Bean
     PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance();
+        return new AirPasswordEncoder();
     }
 }

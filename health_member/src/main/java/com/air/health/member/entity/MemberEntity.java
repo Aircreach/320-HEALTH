@@ -59,7 +59,6 @@ public class MemberEntity implements Serializable, UserDetails {
 	 *
 	 */
 	@TableField(value = "member_password", typeHandler = EncodeTypeHandler.class)
-	@JsonIgnore()
 	private String password;
 	/**
 	 *

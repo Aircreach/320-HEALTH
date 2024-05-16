@@ -40,7 +40,6 @@ public class UserEntity implements Serializable, UserDetails {
      * 密码
      */
     @TableField(value = "user_password", typeHandler = EncodeTypeHandler.class)
-    @JsonIgnore()
     private String password;
     /**
      * 全名
