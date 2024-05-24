@@ -1,6 +1,7 @@
 package com.air.health.instruction.service.impl;
 
 import com.air.health.common.model.PageModel;
+import com.air.health.common.model.ProvinceCountModel;
 import com.air.health.common.util.PageUtil;
 import com.air.health.instruction.dao.InstructionDao;
 import com.air.health.instruction.entity.DepartEntity;
@@ -15,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +48,18 @@ public class InstructionServiceImpl extends ServiceImpl<InstructionDao, Instruct
                 queryWrapper
         );
         return new PageModel(page);
+    }
+
+    @Override
+    public List<ProvinceCountModel> provinceCount() {
+        return instructionDao.getInsCountByProvince();
+    }
+
+    @Override
+    public Integer dateCount(LocalDateTime startDate, LocalDateTime endDate) {
+        startDate = startDate.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        endDate = endDate.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return instructionDao.getCountsByDate(startDate, endDate);
     }
 
     @Override

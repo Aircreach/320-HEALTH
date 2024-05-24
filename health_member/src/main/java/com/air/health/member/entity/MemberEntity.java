@@ -2,6 +2,7 @@ package com.air.health.member.entity;
 
 import com.air.health.common.handler.EncodeTypeHandler;
 import com.air.health.common.util.Constants;
+import com.air.health.member.model.UnitModel;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
@@ -49,7 +50,7 @@ public class MemberEntity implements Serializable, UserDetails {
 	 */
 	@TableField("office_id")
 	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
-	private Integer officeId;
+	private Long officeId;
 	/**
 	 *
 	 */
@@ -80,6 +81,10 @@ public class MemberEntity implements Serializable, UserDetails {
 	 */
 	@TableField("member_score")
 	private Integer memberScore;
+
+	@TableField("member_unit")
+	private UnitModel memberUnit;
+
 	/**
 	 *
 	 */

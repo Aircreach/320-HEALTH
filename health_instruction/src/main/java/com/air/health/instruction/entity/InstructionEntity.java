@@ -1,7 +1,6 @@
 package com.air.health.instruction.entity;
 
 import com.air.health.common.handler.EncodeTypeHandler;
-import com.air.health.common.util.AirPasswordEncoder;
 import com.air.health.common.util.Constants;
 import com.air.health.instruction.handler.JSONListTypeHandler;
 import com.air.health.instruction.model.InsOperated;
@@ -10,14 +9,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import org.apache.ibatis.type.EnumTypeHandler;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,14 +43,14 @@ public class InstructionEntity implements Serializable, UserDetails {
     @TableField(value = "ins_pwd", typeHandler = EncodeTypeHandler.class)
     private String password;
 
+    @TableField("ins_realName")
+    private String realName;
+
     @TableField("ins_address")
     private String address;
 
     @TableField("ins_score")
     private Integer score;
-
-    @TableField("ins_evalNum")
-    private Integer evalNum;
 
     @TableField("ins_desc")
     private String description;
@@ -65,6 +63,9 @@ public class InstructionEntity implements Serializable, UserDetails {
 
     @TableField(value = "ins_status")
     private Constants.AccountStatus status;
+
+    @TableField(value = "createdDate")
+    private LocalDateTime createdDate;
 
     @TableField(value = "ins_label", typeHandler = JSONListTypeHandler.class)
     private List<String> label;

@@ -1,5 +1,6 @@
 package com.air.health.instruction.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -28,7 +29,7 @@ public class BillEntity implements Serializable {
     @TableField("bill_amount")
     private Double amount;
 
-    @TableField("bill_createdDate")
+    @TableField(value = "bill_createdDate", fill = FieldFill.INSERT)
     private LocalDateTime createdDate;
 
     @TableField("bill_paid")

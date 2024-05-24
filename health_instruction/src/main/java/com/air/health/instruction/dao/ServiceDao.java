@@ -3,6 +3,9 @@ package com.air.health.instruction.dao;
 import com.air.health.instruction.entity.ServiceEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * 
@@ -13,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ServiceDao extends BaseMapper<ServiceEntity> {
-	
+    @Select("SELECT service_id FROM tb_service WHERE ins_id = #{insId}")
+    List<Long> selectAllIds(Long insId);
 }

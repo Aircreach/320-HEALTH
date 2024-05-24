@@ -1,5 +1,7 @@
 package com.air.health.user.entity;
 
+import com.air.health.user.model.OrderStatus;
+import com.air.health.user.model.OrderType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,7 +10,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import lombok.Data;
 
 /**
@@ -33,22 +34,37 @@ public class OrderEntity implements Serializable {
 	 * 
 	 */
 	@TableField("order_type")
-	private Integer orderType;
+	private OrderType type;
 	/**
 	 * 
 	 */
-	@TableField("ins_id")
-	private Long insId;
-	/**
-	 * 
-	 */
+	@TableField("user_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+	private Long userId;
+
+
 	@TableField("member_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Long memberId;
+
+	@TableField("service_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
+	private Long serviceId;
+
+	@TableField("order_balance")
+	private Long balance;
+
+	@TableField("order_num")
+	private Integer num;
+
 	/**
 	 * 
 	 */
 	@TableField("order_createdDate")
 	private LocalDateTime createdDate;
+
+	@TableField("order_payedDate")
+	private LocalDateTime payedDate;
 	/**
 	 * 
 	 */
@@ -58,6 +74,6 @@ public class OrderEntity implements Serializable {
 	 * 
 	 */
 	@TableField("order_status")
-	private String orderStatus;
+	private OrderStatus status;
 
 }

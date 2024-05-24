@@ -52,7 +52,7 @@ public class CommonController {
             throw new RuntimeException(e);
         }
 
-        return Result.success(fileName);
+        return Result.success().put("fileName", fileName);
     }
 
     /**

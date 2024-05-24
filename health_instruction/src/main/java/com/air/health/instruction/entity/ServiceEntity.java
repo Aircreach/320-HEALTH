@@ -1,9 +1,7 @@
 package com.air.health.instruction.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.air.health.instruction.model.ServiceType;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
@@ -23,31 +21,28 @@ import lombok.Data;
 public class ServiceEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
+ 
 	@TableId(value = "service_id", type = IdType.ASSIGN_ID)
 	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Long serviceId;
-	/**
-	 * 
-	 */
+
+	@TableField("service_name")
+	private String name;
+ 
 	@TableField("service_type")
-	private Integer serviceType;
-	/**
-	 * 
-	 */
+	private ServiceType type;
+ 
 	@TableField("service_desc")
-	private String serviceDesc;
-	/**
-	 * 
-	 */
+	private String description;
+ 
 	@TableField("service_price")
-	private Long servicePrice;
-	/**
-	 * 
-	 */
+	private Long price;
+ 
 	@TableField("ins_id")
+	@JsonSerialize(using = com.fasterxml.jackson.databind.ser.std.ToStringSerializer.class)
 	private Long insId;
 
+	@TableField("isDeleted")
+	@TableLogic(value = "0",delval = "1")
+	private Integer isDeleted;
 }

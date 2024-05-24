@@ -37,7 +37,7 @@ public class ServiceController {
      */
     @RequestMapping("/list")
 //    @RequiresPermissions("instruction:service:list")
-    public Result list(@RequestParam Map<String, Object> params){
+    public Result list(@RequestBody Map<String, Object> params){
         PageModel page = serviceService.queryPage(params);
 
         return Result.success().put("page", page);
@@ -49,7 +49,7 @@ public class ServiceController {
      */
     @RequestMapping("/info/{serviceId}")
 //    @RequiresPermissions("instruction:service:info")
-    public Result info(@PathVariable("serviceId") Long serviceId){
+    public Result info(@PathVariable("serviceId") String serviceId){
 		ServiceEntity service = serviceService.getById(serviceId);
 
         return Result.success().put("service", service);

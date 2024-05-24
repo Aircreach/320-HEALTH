@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -72,7 +71,7 @@ public class DepartController {
         temp.add(query_ins);
         temp.add(query_depart);
         params.put("extra", temp);
-        return memberFeign.list(params);
+        return memberFeign.listMember(params);
     }
 
 

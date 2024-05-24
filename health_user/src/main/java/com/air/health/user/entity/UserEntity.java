@@ -1,6 +1,7 @@
 package com.air.health.user.entity;
 
 import com.air.health.common.handler.EncodeTypeHandler;
+import com.air.health.common.util.Constants;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -82,6 +83,11 @@ public class UserEntity implements Serializable, UserDetails {
     @TableField("user_address")
     private String address;
     /**
+     * 余额
+     */
+    @TableField("user_balance")
+    private Long balance;
+    /**
      * 注册时间
      */
     @TableField(value = "user_registerTime", fill = FieldFill.INSERT)
@@ -89,13 +95,13 @@ public class UserEntity implements Serializable, UserDetails {
     /**
      *
      */
-    @TableField(value = "user_loginTime", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "user_loginTime", fill = FieldFill.INSERT)
     private LocalDateTime loginTime;
     /**
      * 状态
      */
     @TableField("user_status")
-    private Integer status;
+    private Constants.AccountStatus status;
     /**
      * 所属机构
      */

@@ -12,7 +12,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -108,6 +110,10 @@ public class PageUtil<T> {
                         case Constants.BETWEEN:
                             // 获取属性的值
                             queryWrapper.between(columnName, item.get(Constants.VALUE1), item.get(Constants.VALUE2));
+                            break;
+                        case Constants.IN:
+                            // 获取属性的值
+                            queryWrapper.in(columnName, (List<Long>) item.get(Constants.VALUE));
                             break;
                         case Constants.GE:
                             // 获取属性的值

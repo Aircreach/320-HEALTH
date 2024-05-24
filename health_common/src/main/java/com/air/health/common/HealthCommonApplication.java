@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
-//@EnableFeignClients(basePackages = "com.air.health.common.feign")
+@EnableFeignClients()
 @RefreshScope
 public class HealthCommonApplication {
 

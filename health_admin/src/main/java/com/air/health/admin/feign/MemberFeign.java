@@ -1,4 +1,4 @@
-package com.air.health.member.feign;
+package com.air.health.admin.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 

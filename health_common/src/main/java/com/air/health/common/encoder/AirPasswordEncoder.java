@@ -1,4 +1,4 @@
-package com.air.health.common.util;
+package com.air.health.common.encoder;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

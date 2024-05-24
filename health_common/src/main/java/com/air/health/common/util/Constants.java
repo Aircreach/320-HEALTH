@@ -46,6 +46,8 @@ public class Constants {
     public static final String LIKE = "like";
     // between
     public static final String BETWEEN = "between";
+    // in
+    public static final String IN = "in";
     // ge
     public static final String GE = "ge";
     // le
@@ -84,6 +86,7 @@ public class Constants {
     public static final String REDIS_KEY_PREFIX_TOKEN_ADMIN = "TOKEN-ADMIN-%s";
     public static final String REDIS_KEY_PREFIX_TOKEN_FEIGN = "TOKEN-FEIGN-%s";
 
+    public static final String REDIS_KEY_PREFIX_SCHEDULE_ADVISORY = "SCHEDULE-ADVISORY";
     /** 定时任务 **/
     // 定时任务状态
     public enum ScheduleStatus {

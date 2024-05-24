@@ -4,6 +4,7 @@ import com.air.health.common.model.PageModel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.air.health.instruction.entity.ServiceEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface ServiceService extends IService<ServiceEntity> {
 
     PageModel queryPage(Map<String, Object> params);
+
+    List<Long> queryAllId(Long insId);
 }
 

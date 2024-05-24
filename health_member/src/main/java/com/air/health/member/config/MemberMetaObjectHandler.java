@@ -5,13 +5,15 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Component
 public class MemberMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.strictInsertFill(metaObject, "memberJoinDate", LocalDateTime.class, LocalDateTime.now());
+        this.strictInsertFill(metaObject, "memberJoinDate", LocalDateTime.class, LocalDateTime.now(ZoneOffset.UTC));
+        this.strictInsertFill(metaObject, "createDate", LocalDateTime.class, LocalDateTime.now(ZoneOffset.UTC));
     }
 
     @Override

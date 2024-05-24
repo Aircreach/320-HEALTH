@@ -18,9 +18,15 @@ import java.util.Map;
 @FeignClient(value = "air-health-instruction", configuration = FeignClientInterceptor.class)
 public interface InsFeign {
     @PostMapping("/instruction/list")
-    Result list(@RequestBody Map<String, Object> params);
+    Result listIns(@RequestBody Map<String, Object> params);
 
     @GetMapping("/instruction/info/{instructionId}")
+    Result infoIns(@PathVariable("instructionId") String insId);
+
+    @PostMapping("/service/list")
+    Result listService(@RequestBody Map<String, Object> params);
+
+    @GetMapping("/service/info/{serviceId}")
 //    @RequiresPermissions("generator:instruction:info")
-    Result info(@PathVariable("instructionId") String insId);
+    Result infoService(@PathVariable("serviceId") String insId);
 }

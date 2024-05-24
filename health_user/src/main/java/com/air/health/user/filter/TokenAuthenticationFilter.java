@@ -63,6 +63,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        // web socket 请求
+        if (request.getHeader("Upgrade") != null && request.getHeader("Upgrade").equalsIgnoreCase("websocket")) {
+
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("user", null, null);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (request.getHeader(tokenProvider.getDefaultHeader()) != null) {
             String token = request.getHeader(tokenProvider.getDefaultHeader());
             Claims claims = tokenProvider.parseToken(Constants.TOKEN_USER, token);

@@ -59,7 +59,6 @@ public class KaptchaController {
                 1,
                 TimeUnit.MINUTES
         );
-        log.info("================{}", String.format(VALIDATE + "%s", timestamp));
         BufferedImage buffer = kaptcha.createImage(validate);
         //输出流 ==> 写回浏览器(客户端)
         ServletOutputStream outputStream = response.getOutputStream();

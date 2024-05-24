@@ -3,6 +3,7 @@ package com.air.health.common.handler;
 import com.air.health.common.model.AirException;
 import com.air.health.common.model.Result;
 import io.jsonwebtoken.JwtException;
+import jakarta.websocket.server.ServerEndpoint;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * @description:
  */
 @Slf4j
-@RestControllerAdvice(annotations = {RestController.class, Controller.class})
+@RestControllerAdvice(annotations = {RestController.class, Controller.class, ServerEndpoint.class})
 public class AirExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());

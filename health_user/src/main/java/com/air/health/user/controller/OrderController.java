@@ -34,7 +34,7 @@ public class OrderController {
      */
     @RequestMapping("/list")
 //    @RequiresPermissions("instruction:order:list")
-    public Result list(@RequestParam Map<String, Object> params){
+    public Result list(@RequestBody Map<String, Object> params){
         PageModel page = orderService.queryPage(params);
 
         return Result.success().put("page", page);

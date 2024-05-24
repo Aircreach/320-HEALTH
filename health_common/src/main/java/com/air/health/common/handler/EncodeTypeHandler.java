@@ -1,6 +1,6 @@
 package com.air.health.common.handler;// 可封装字段加密工具类提供加解密的功能，该工具类在应用初始或启动的时候设置密码等信息。
 
-import com.air.health.common.util.AirPasswordEncoder;
+import com.air.health.common.encoder.AirPasswordEncoder;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 

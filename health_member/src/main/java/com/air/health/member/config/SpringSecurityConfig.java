@@ -1,6 +1,6 @@
 package com.air.health.member.config;
 
-import com.air.health.common.util.AirPasswordEncoder;
+import com.air.health.common.encoder.AirPasswordEncoder;
 import com.air.health.member.filter.TokenAuthenticationFilter;
 import com.air.health.member.security.MemberAuthenticationEntryPoint;
 import com.air.health.member.service.MemberService;
@@ -18,7 +18,6 @@ import org.springframework.security.config.annotation.web.configurers.CorsConfig
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -57,7 +56,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/member/login",  "/member/save").permitAll()
+                        .requestMatchers("/member/login", "/member/save").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasicConfigurer -> {

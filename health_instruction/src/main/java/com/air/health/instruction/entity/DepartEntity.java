@@ -1,6 +1,7 @@
 package com.air.health.instruction.entity;
 
 import com.air.health.instruction.handler.JSONListTypeHandler;
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -52,11 +53,11 @@ public class DepartEntity {
     private String contactInfo;
 
     // 创建日期
-    @TableField("created_date")
+    @TableField(value = "created_date", fill = FieldFill.INSERT)
     private LocalDateTime createdDate;
 
     // 最后更新时间
-    @TableField("last_update")
+    @TableField(value = "last_update", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime lastUpdate;
 
     // 部门预算
